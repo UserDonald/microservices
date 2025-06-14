@@ -1,15 +1,21 @@
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import { randomBytes } from 'crypto';
 import express from 'express';
 
-
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 const posts = {};
 
 app.get('/posts', (req, res) => {
     res.send(posts);
+});
+
+app.get('/posts/:id', (req, res) => {
+  const { id } = req.params;
+  res.send(posts[id]);
 });
 
 app.post('/posts', (req, res) => {
