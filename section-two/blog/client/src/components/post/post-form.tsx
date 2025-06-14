@@ -17,19 +17,23 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
-  title: z.string().min(1, { message: 'Title is required' }),
+  content: z.string().min(1, { message: 'Content is required' }),
 });
 
 const PostForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: '',
+      content: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    const { success } = await createPost(values.title);
+    const { success } = await createPost({
+      content: values.content,
+      author: 'Donald Nash',
+      username: 'thedonaldnash',
+    });
     if (success) {
       form.reset();
       toast.success('Post created successfully');
@@ -46,10 +50,10 @@ const PostForm = () => {
       >
         <FormField
           control={form.control}
-          name="title"
+          name="content"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>Content</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -58,7 +62,7 @@ const PostForm = () => {
           )}
         />
         <Button type="submit" size="sm">
-          Create Post
+          Create
         </Button>
       </form>
     </Form>

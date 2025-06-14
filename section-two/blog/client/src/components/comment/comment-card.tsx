@@ -1,23 +1,28 @@
-const CommentCard = ({ comment }: { comment: BlogPostComment }) => {
+import AuthorHeader from '@/components/interface/author-header';
+import Avatar from '@/components/interface/avatar';
+import { cn, formatDate } from '@/lib/utils';
+
+const CommentCard = ({
+  author,
+  username,
+  content,
+  createdAt,
+  className,
+}: BlogContent & { className?: string }) => {
   return (
-    <div className="flex flex-col gap-3 border rounded-md p-4">
+    <div className={cn('flex flex-col gap-3 border rounded-md p-4', className)}>
       <div className="flex justify-between gap-2">
         <div className="flex gap-2">
-          <div className="bg-accent rounded-full w-8 h-8 flex items-center justify-center">
-            <span className="text-xs text-primary font-medium">DN</span>
-          </div>
-          <div className="flex gap-1 items-center">
-            <span className="text-sm font-medium">Donald Nash</span>
-            <span className="text-sm text-muted-foreground">
-              @thedonaldnash
-            </span>
-          </div>
+          <Avatar name={author} />
+          <AuthorHeader author={author} username={username} type="comment" />
         </div>
         <div className="flex flex-col gap-1">
-          <span className="text-sm text-muted-foreground">2 hours ago</span>
+          <span className="text-sm text-muted-foreground">
+            {formatDate(createdAt)}
+          </span>
         </div>
       </div>
-      <p className="text-sm">{comment.content}</p>
+      <p className="text-sm">{content}</p>
     </div>
   );
 };

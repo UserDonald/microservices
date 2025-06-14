@@ -4,16 +4,25 @@ import axios from 'axios';
 
 const COMMENTS_BASE_URL = 'http://localhost:4001';
 
-export const createComment = async (
-  postId: string,
-  comment: string
-): Promise<{
+export const createComment = async ({
+  postId,
+  content,
+  author,
+  username,
+}: {
+  postId: string;
+  content: string;
+  author: string;
+  username: string;
+}): Promise<{
   success: boolean;
   error?: string;
 }> => {
   try {
     await axios.post(`${COMMENTS_BASE_URL}/posts/${postId}/comments`, {
-      content: comment,
+      content,
+      author,
+      username,
     });
 
     return {
@@ -34,9 +43,7 @@ export const getComments = async (
 ): Promise<{
   success: boolean;
   error?: string;
-  data?: {
-    comments: BlogPostComment[];
-  };
+  comments?: BlogContent[];
 }> => {
   try {
     const { data } = await axios.get(
@@ -45,9 +52,7 @@ export const getComments = async (
 
     return {
       success: true,
-      data: {
-        comments: Object.values(data),
-      },
+      comments: Object.values(data),
     };
   } catch (error) {
     console.error(error);

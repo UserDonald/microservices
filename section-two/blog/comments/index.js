@@ -15,13 +15,21 @@ app.get('/posts/:id/comments', (req, res) => {
 
 app.post('/posts/:id/comments', (req, res) => {
   const commentId = randomBytes(4).toString('hex');
-  const { content } = req.body;
+  const { content, author, username } = req.body;
 
   const comments = commentsByPostId[req.params.id] || [];
-  comments.push({ id: commentId, content });
+  const newComment = {
+    id: commentId,
+    content,
+    author,
+    username,
+    createdAt: new Date().toISOString(),
+  };
+  
+  comments.push(newComment);
   commentsByPostId[req.params.id] = comments;
 
-  res.status(201).send(comments);
+  res.status(201).send(newComment);
 });
 
 app.listen(4001, () => {

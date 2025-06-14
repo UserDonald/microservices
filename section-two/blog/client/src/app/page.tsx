@@ -1,7 +1,8 @@
+import ContentLoading from '@/components/loading/content-loading';
 import PostCard from '@/components/post/post-card';
 import PostForm from '@/components/post/post-form';
 import { getPosts } from '@/lib/actions/post.actions';
-import { Loader2 } from 'lucide-react';
+import Link from 'next/link';
 import { Suspense } from 'react';
 
 const Page = async () => {
@@ -9,14 +10,7 @@ const Page = async () => {
     <main className="flex flex-col gap-4 max-w-5xl mx-auto pt-16 pb-12 px-4">
       <h1 className="text-2xl font-semibold">Social Media Blog</h1>
       <PostForm />
-      <Suspense
-        fallback={
-          <div className="flex justify-center items-center gap-2 h-32">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="text-sm text-muted-foreground">Loading...</span>
-          </div>
-        }
-      >
+      <Suspense fallback={<ContentLoading />}>
         <PageContent />
       </Suspense>
     </main>
@@ -24,15 +18,20 @@ const Page = async () => {
 };
 
 const PageContent = async () => {
-  const { data } = await getPosts();
-  const posts = data?.posts || [];
+  const { posts } = await getPosts();
 
   return (
-    <div className="flex flex-col gap-4">
-      {posts.map((post: BlogPost) => (
-        <PostCard key={post.id} post={post} />
+    <>
+      {posts?.map((post: BlogContent) => (
+        <Link key={post.id} href={`/posts/${post.id}`}>
+          <PostCard
+            key={post.id}
+            {...post}
+            className="hover:bg-accent/50 hover:shadow-xs transition-colors"
+          />
+        </Link>
       ))}
-    </div>
+    </>
   );
 };
 

@@ -1,11 +1,13 @@
 import CommentCard from '@/components/comment/comment-card';
 import CommentForm from '@/components/comment/comment-form';
+import ContentLoading from '@/components/loading/content-loading';
 import PostCard from '@/components/post/post-card';
 import { buttonVariants } from '@/components/ui/button';
 import { getComments } from '@/lib/actions/comment.actions';
 import { getPost } from '@/lib/actions/post.actions';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
 const Page = async ({ params }: PageParams) => {
@@ -20,16 +22,9 @@ const Page = async ({ params }: PageParams) => {
         >
           <ArrowLeft className="w-4 h-4" />
         </Link>
-        <h1 className="text-base font-medium">Media Post</h1>
+        <h1 className="text-base font-medium">Blog Post</h1>
       </div>
-      <Suspense
-        fallback={
-          <div className="flex justify-center items-center gap-2 h-32">
-            <Loader2 className="w-4 h-4 animate-spin" />
-            <span className="text-sm text-muted-foreground">Loading...</span>
-          </div>
-        }
-      >
+      <Suspense fallback={<ContentLoading className="h-40" />}>
         <PageContent postId={postId} />
       </Suspense>
     </main>
@@ -37,29 +32,25 @@ const Page = async ({ params }: PageParams) => {
 };
 
 const PageContent = async ({ postId }: { postId: string }) => {
-  const [{ data: postData }, { data: commentsData }] = await Promise.all([
+  const [{ post }, { comments }] = await Promise.all([
     getPost(postId),
     getComments(postId),
   ]);
-  const post = postData?.post || null;
-  const comments = commentsData?.comments || [];
 
   if (!post) {
-    return (
-      <div className="text-center text-lg font-semibold">Post not found</div>
-    );
+    redirect('/');
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <PostCard post={post} element="div" />
+    <>
+      <PostCard {...post} />
       <CommentForm postId={postId} />
       <div className="flex flex-col gap-2">
-        {comments.map((comment: BlogPostComment) => (
-          <CommentCard key={comment.id} comment={comment} />
+        {comments?.map((comment: BlogContent) => (
+          <CommentCard key={comment.id} {...comment} />
         ))}
       </div>
-    </div>
+    </>
   );
 };
 

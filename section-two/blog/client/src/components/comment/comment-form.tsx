@@ -27,7 +27,12 @@ const CommentForm = ({ postId }: { postId: string }) => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    const { success } = await createComment(postId, data.comment);
+    const { success } = await createComment({
+      postId,
+      content: data.comment,
+      author: 'Donald Nash',
+      username: 'thedonaldnash',
+    });
 
     if (success) {
       form.reset();

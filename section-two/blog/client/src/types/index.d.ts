@@ -1,11 +1,9 @@
-type BlogPost = {
-  id: string;
-  title: string;
-};
-
-type BlogPostComment = {
+type BlogContent = {
   id: string;
   content: string;
+  author: string;
+  username: string;
+  createdAt: string;
 };
 
 interface PageParams {

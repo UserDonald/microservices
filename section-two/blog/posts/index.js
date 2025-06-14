@@ -20,11 +20,14 @@ app.get('/posts/:id', (req, res) => {
 
 app.post('/posts', (req, res) => {
   const id = randomBytes(4).toString('hex');
-  const { title } = req.body;
+  const { content, author, username } = req.body;
   
   posts[id] = {
     id,
-    title
+    content,
+    author,
+    username,
+    createdAt: new Date().toISOString(),
   };
   
   res.status(201).send(posts[id]);

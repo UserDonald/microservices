@@ -4,15 +4,23 @@ import axios from 'axios';
 
 const POSTS_BASE_URL = 'http://localhost:4000';
 
-export const createPost = async (
-  title: string
-): Promise<{
+export const createPost = async ({
+  content,
+  author,
+  username,
+}: {
+  content: string;
+  author: string;
+  username: string;
+}): Promise<{
   success: boolean;
   error?: string;
 }> => {
   try {
     await axios.post(`${POSTS_BASE_URL}/posts`, {
-      title,
+      content,
+      author,
+      username,
     });
 
     return {
@@ -30,18 +38,14 @@ export const createPost = async (
 export const getPosts = async (): Promise<{
   success: boolean;
   error?: string;
-  data?: {
-    posts: BlogPost[];
-  };
+  posts?: BlogContent[];
 }> => {
   try {
     const { data } = await axios.get(`${POSTS_BASE_URL}/posts`);
 
     return {
       success: true,
-      data: {
-        posts: Object.values(data),
-      },
+      posts: Object.values(data),
     };
   } catch (error) {
     console.error(error);
@@ -57,18 +61,14 @@ export const getPost = async (
 ): Promise<{
   success: boolean;
   error?: string;
-  data?: {
-    post: BlogPost;
-  };
+  post?: BlogContent;
 }> => {
   try {
     const { data } = await axios.get(`${POSTS_BASE_URL}/posts/${id}`);
 
     return {
       success: true,
-      data: {
-        post: data,
-      },
+      post: data,
     };
   } catch (error) {
     console.error(error);
