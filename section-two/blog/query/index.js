@@ -12,6 +12,10 @@ app.get('/posts', (req, res) => {
   res.send(posts);
 });
 
+app.get('/posts/:id', (req, res) => {
+  res.send(posts[req.params.id]);
+});
+
 app.post('/events', (req, res) => {
   const { type, data } = req.body;
 

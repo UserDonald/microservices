@@ -8,17 +8,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const posts = {};
-
-app.get('/posts', (req, res) => {
-  res.send(posts);
-});
-
-app.get('/posts/:id', (req, res) => {
-  const { id } = req.params;
-  res.send(posts[id]);
-});
-
 app.post('/posts', async (req, res) => {
   const id = randomBytes(4).toString('hex');
   const { content, author, username } = req.body;
@@ -31,8 +20,6 @@ app.post('/posts', async (req, res) => {
     createdAt: new Date().toISOString(),
   };
 
-  posts[id] = newPost;
-
   try {
     await axios.post('http://localhost:4005/events', {
       type: 'PostCreated',
@@ -44,7 +31,7 @@ app.post('/posts', async (req, res) => {
     console.error('Failed to publish event to event bus:', error.message);
   }
 
-  res.status(201).send(posts[id]);
+  res.status(201).send(newPost);
 });
 
 app.post('/events', (req, res) => {

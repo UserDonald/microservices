@@ -22,7 +22,7 @@ const PageContent = async () => {
 
   return (
     <>
-      {posts?.map((post: BlogContent) => (
+      {posts?.map((post: BlogContentComment) => (
         <Link key={post.id} href={`/posts/${post.id}`}>
           <PostCard
             key={post.id}

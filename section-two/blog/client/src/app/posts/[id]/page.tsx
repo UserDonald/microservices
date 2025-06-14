@@ -3,7 +3,6 @@ import CommentForm from '@/components/comment/comment-form';
 import ContentLoading from '@/components/loading/content-loading';
 import PostCard from '@/components/post/post-card';
 import { buttonVariants } from '@/components/ui/button';
-import { getComments } from '@/lib/actions/comment.actions';
 import { getPost } from '@/lib/actions/post.actions';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -32,10 +31,7 @@ const Page = async ({ params }: PageParams) => {
 };
 
 const PageContent = async ({ postId }: { postId: string }) => {
-  const [{ post }, { comments }] = await Promise.all([
-    getPost(postId),
-    getComments(postId),
-  ]);
+  const { post } = await getPost(postId);
 
   if (!post) {
     redirect('/');
@@ -46,9 +42,9 @@ const PageContent = async ({ postId }: { postId: string }) => {
       <PostCard {...post} />
       <CommentForm postId={postId} />
       <div className="flex flex-col gap-2">
-        {comments?.map((comment: BlogContent) => (
+        {post?.comments?.map((comment: BlogContent) => (
           <CommentCard key={comment.id} {...comment} />
-        ))}
+        ))} 
       </div>
     </>
   );

@@ -37,28 +37,3 @@ export const createComment = async ({
     };
   }
 };
-
-export const getComments = async (
-  postId: string
-): Promise<{
-  success: boolean;
-  error?: string;
-  comments?: BlogContent[];
-}> => {
-  try {
-    const { data } = await axios.get(
-      `${COMMENTS_BASE_URL}/posts/${postId}/comments`
-    );
-
-    return {
-      success: true,
-      comments: Object.values(data),
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to get comments',
-    };
-  }
-};

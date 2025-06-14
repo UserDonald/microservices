@@ -3,6 +3,7 @@
 import axios from 'axios';
 
 const POSTS_BASE_URL = 'http://localhost:4000';
+const QUERY_BASE_URL = 'http://localhost:4002';
 
 export const createPost = async ({
   content,
@@ -38,10 +39,10 @@ export const createPost = async ({
 export const getPosts = async (): Promise<{
   success: boolean;
   error?: string;
-  posts?: BlogContent[];
+  posts?: BlogContentComment[];
 }> => {
   try {
-    const { data } = await axios.get(`${POSTS_BASE_URL}/posts`);
+    const { data } = await axios.get(`${QUERY_BASE_URL}/posts`);
 
     return {
       success: true,
@@ -61,10 +62,10 @@ export const getPost = async (
 ): Promise<{
   success: boolean;
   error?: string;
-  post?: BlogContent;
+  post?: BlogContentComment;
 }> => {
   try {
-    const { data } = await axios.get(`${POSTS_BASE_URL}/posts/${id}`);
+    const { data } = await axios.get(`${QUERY_BASE_URL}/posts/${id}`);
 
     return {
       success: true,
