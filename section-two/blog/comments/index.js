@@ -1,3 +1,4 @@
+import axios from 'axios';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { randomBytes } from 'crypto';
@@ -13,7 +14,7 @@ app.get('/posts/:id/comments', (req, res) => {
   res.send(commentsByPostId[req.params.id] || []);
 });
 
-app.post('/posts/:id/comments', (req, res) => {
+app.post('/posts/:id/comments', async (req, res) => {
   const commentId = randomBytes(4).toString('hex');
   const { content, author, username } = req.body;
 
@@ -29,7 +30,25 @@ app.post('/posts/:id/comments', (req, res) => {
   comments.push(newComment);
   commentsByPostId[req.params.id] = comments;
 
+  try {
+    await axios.post('http://localhost:4005/events', {
+      type: 'CommentCreated',
+      data: {
+        ...newComment,
+        postId: req.params.id,
+      },
+    });
+  } catch (error) {
+    console.error('Failed to publish event to event bus:', error.message);
+  }
+
   res.status(201).send(newComment);
+});
+
+app.post('/events', (req, res) => {
+  console.log('Received event: ', req.body.type);
+
+  res.send({});
 });
 
 app.listen(4001, () => {

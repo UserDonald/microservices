@@ -5,12 +5,24 @@ import express from 'express';
 const app = express();
 app.use(bodyParser.json());
 
-app.post('/events', (req, res) => {
+app.post('/events', async (req, res) => {
   const event = req.body;
 
-  axios.post('http://localhost:4000/events', event); // posts service
-  axios.post('http://localhost:4001/events', event); // comments service
-  axios.post('http://localhost:4002/events', event); // query service
+  const services = [
+    { url: 'http://localhost:4000/events', name: 'posts service' },
+    { url: 'http://localhost:4001/events', name: 'comments service' },
+    { url: 'http://localhost:4002/events', name: 'query service' }
+  ];
+
+  const promises = services.map(async (service) => {
+    try {
+      await axios.post(service.url, event);
+    } catch (error) {
+      console.error(`Failed to send event to ${service.name}:`, error.message);
+    }
+  });
+
+  await Promise.allSettled(promises);
 
   res.send({ status: 'OK' });
 });
