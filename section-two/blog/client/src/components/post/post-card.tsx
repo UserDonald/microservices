@@ -10,7 +10,7 @@ const PostCard = ({
   createdAt,
   className,
   comments,
-}: BlogContentComment & { className?: string }) => {
+}: BlogContentPost & { className?: string }) => {
   return (
     <div className={cn('flex flex-col gap-3 border rounded-md p-4', className)}>
       <div className="flex justify-between gap-2">

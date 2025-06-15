@@ -19,13 +19,14 @@ app.post('/posts/:id/comments', async (req, res) => {
     username,
     createdAt: new Date().toISOString(),
   };
-  
+
   try {
     await axios.post('http://localhost:4005/events', {
       type: 'CommentCreated',
       data: {
         ...newComment,
         postId: req.params.id,
+        status: 'pending',
       },
     });
   } catch (error) {
@@ -35,8 +36,16 @@ app.post('/posts/:id/comments', async (req, res) => {
   res.status(201).send(newComment);
 });
 
-app.post('/events', (req, res) => {
+app.post('/events', async (req, res) => {
   console.log('Received event: ', req.body.type);
+  const { type, data } = req.body;
+
+  if (type === 'CommentModerated') {
+    await axios.post('http://localhost:4005/events', {
+      type: 'CommentUpdated',
+      data,
+    });
+  }
 
   res.send({});
 });

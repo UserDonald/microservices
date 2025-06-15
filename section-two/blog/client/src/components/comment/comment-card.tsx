@@ -8,7 +8,22 @@ const CommentCard = ({
   content,
   createdAt,
   className,
-}: BlogContent & { className?: string }) => {
+  status,
+}: BlogContentComment & { className?: string }) => {
+  let commentContent = content;
+
+  if (status === 'approved') {
+    commentContent = content;
+  }
+
+  if (status === 'rejected') {
+    commentContent = 'This comment has been rejected';
+  }
+
+  if (status === 'pending') {
+    commentContent = 'This comment is awaiting moderation';
+  }
+
   return (
     <div className={cn('flex flex-col gap-3 border rounded-md p-4', className)}>
       <div className="flex justify-between gap-2">
@@ -22,7 +37,7 @@ const CommentCard = ({
           </span>
         </div>
       </div>
-      <p className="text-sm">{content}</p>
+      <p className="text-sm">{commentContent}</p>
     </div>
   );
 };

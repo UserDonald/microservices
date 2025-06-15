@@ -1,9 +1,10 @@
-type BlogContent = {
+type BlogContentPost = {
   id: string;
   content: string;
   author: string;
   username: string;
   createdAt: string;
+  comments: BlogContentComment[];
 };
 
 type BlogContentComment = {
@@ -12,7 +13,7 @@ type BlogContentComment = {
   author: string;
   username: string;
   createdAt: string;
-  comments: BlogContent[];
+  status: 'pending' | 'approved' | 'rejected';
 };
 
 interface PageParams {

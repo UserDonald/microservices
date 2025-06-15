@@ -39,7 +39,7 @@ export const createPost = async ({
 export const getPosts = async (): Promise<{
   success: boolean;
   error?: string;
-  posts?: BlogContentComment[];
+  posts?: BlogContentPost[];
 }> => {
   try {
     const { data } = await axios.get(`${QUERY_BASE_URL}/posts`);
@@ -62,7 +62,7 @@ export const getPost = async (
 ): Promise<{
   success: boolean;
   error?: string;
-  post?: BlogContentComment;
+  post?: BlogContentPost;
 }> => {
   try {
     const { data } = await axios.get(`${QUERY_BASE_URL}/posts/${id}`);

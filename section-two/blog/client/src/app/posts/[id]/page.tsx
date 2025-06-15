@@ -42,7 +42,7 @@ const PageContent = async ({ postId }: { postId: string }) => {
       <PostCard {...post} />
       <CommentForm postId={postId} />
       <div className="flex flex-col gap-2">
-        {post?.comments?.map((comment: BlogContent) => (
+        {post?.comments?.map((comment: BlogContentComment) => (
           <CommentCard key={comment.id} {...comment} />
         ))} 
       </div>
