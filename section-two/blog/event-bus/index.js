@@ -5,9 +5,13 @@ import express from 'express';
 const app = express();
 app.use(bodyParser.json());
 
+const events = [];
+
 app.post('/events', async (req, res) => {
   console.log('Received event: ', req.body.type);
   const event = req.body;
+
+  events.push(event);
 
   const services = [
     { url: 'http://localhost:4000/events', name: 'posts service' },
@@ -27,6 +31,10 @@ app.post('/events', async (req, res) => {
   await Promise.allSettled(promises);
 
   res.send({ status: 'OK' });
+});
+
+app.get('/events', (req, res) => {
+  res.send(events);
 });
 
 app.listen(4005, () => {
