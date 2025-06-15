@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: posts
-          image: djnash/posts:0.0.1
+          image: djnash/posts:latest
           resources:
             requests:
               memory: '64Mi'
