@@ -2,8 +2,8 @@
 
 import axios from 'axios';
 
-const POSTS_BASE_URL = 'http://localhost:4000';
-const QUERY_BASE_URL = 'http://localhost:4002';
+const POSTS_BASE_URL = 'http://posts-ci-srv:4000';
+const QUERY_BASE_URL = 'http://query-ci-srv:4002';
 
 export const createPost = async ({
   content,

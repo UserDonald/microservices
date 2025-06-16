@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const COMMENTS_BASE_URL = 'http://localhost:4001';
+const COMMENTS_BASE_URL = 'http://comments-ci-srv:4001';
 
 export const createComment = async ({
   postId,

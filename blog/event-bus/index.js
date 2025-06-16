@@ -14,10 +14,10 @@ app.post('/events', async (req, res) => {
   events.push(event);
 
   const services = [
-    { url: 'http://posts-clusterip-srv:4000/events', name: 'posts service' },
-    // { url: 'http://localhost:4001/events', name: 'comments service' },
-    // { url: 'http://localhost:4002/events', name: 'query service' },
-    // { url: 'http://localhost:4003/events', name: 'moderation service' },
+    { url: 'http://posts-ci-srv:4000/events', name: 'posts service' },
+    { url: 'http://comments-ci-srv:4001/events', name: 'comments service' },
+    { url: 'http://query-ci-srv:4002/events', name: 'query service' },
+    { url: 'http://moderation-ci-srv:4003/events', name: 'moderation service' },
   ];
 
   const promises = services.map(async (service) => {
