@@ -15,6 +15,7 @@ spec:
       containers:
         - name: event-bus
           image: djnash/event-bus:latest
+          imagePullPolicy: Never
           resources:
             requests:
               memory: '64Mi'

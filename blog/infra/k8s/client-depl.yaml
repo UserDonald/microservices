@@ -19,6 +19,7 @@ spec:
       containers:
         - name: client
           image: djnash/client:latest
+          imagePullPolicy: Never
           resources:
             requests:
               memory: '64Mi'

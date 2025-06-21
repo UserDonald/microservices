@@ -15,6 +15,7 @@ spec:
       containers:
         - name: moderation
           image: djnash/moderation:latest
+          imagePullPolicy: Never
           resources:
             requests:
               memory: '64Mi'

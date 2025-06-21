@@ -32,6 +32,8 @@ const handleEvent = (type, data) => {
     updatedComment.status = status;
     updatedComment.content = content;
   }
+
+  console.log('Updated posts: ', posts);
 };
 
 app.get('/posts', (req, res) => {

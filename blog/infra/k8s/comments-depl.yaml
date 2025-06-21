@@ -15,6 +15,7 @@ spec:
       containers:
         - name: comments
           image: djnash/comments:latest
+          imagePullPolicy: Never
           resources:
             requests:
               memory: '64Mi'
