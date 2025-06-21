@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^/services/posts/create$ /posts/create break;
+      rewrite ^/services/posts/([^/]+)/comments$ /posts/$1/comments break;
+      rewrite ^/services/posts/([^/]+)$ /posts/$1 break;
+      rewrite ^/services/posts$ /posts break;
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: posts.com
+      http:
+        paths:
+          # Create endpoint - exact match first
+          - path: /services/posts/create$
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: posts-ci-srv
+                port:
+                  number: 4000
+          # Comments endpoint
+          - path: /services/posts/([^/]+)/comments$
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: comments-ci-srv
+                port:
+                  number: 4001
+          # Individual post endpoint - exclude 'create'
+          - path: /services/posts/(?!create$)([^/]+)$
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: query-ci-srv
+                port:
+                  number: 4002
+          # All posts endpoint
+          - path: /services/posts$
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: query-ci-srv
+                port:
+                  number: 4002
+          # Next.js client for everything else
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client-ci-srv
+                port:
+                  number: 3000
+
+

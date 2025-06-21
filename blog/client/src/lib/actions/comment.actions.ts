@@ -2,7 +2,7 @@
 
 import axios from 'axios';
 
-const COMMENTS_BASE_URL = 'http://comments-ci-srv:4001';
+const BASE_URL = 'http://10.108.149.211';
 
 export const createComment = async ({
   postId,
@@ -19,10 +19,14 @@ export const createComment = async ({
   error?: string;
 }> => {
   try {
-    await axios.post(`${COMMENTS_BASE_URL}/posts/${postId}/comments`, {
+    await axios.post(`${BASE_URL}/services/posts/${postId}/comments`, {
       content,
       author,
       username,
+    }, {
+      headers: {
+        'Host': 'posts.com'
+      }
     });
 
     return {

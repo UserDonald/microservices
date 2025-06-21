@@ -18,11 +18,27 @@ const Page = async () => {
 };
 
 const PageContent = async () => {
-  const { posts } = await getPosts();
+  const { success, posts, error } = await getPosts();
+
+  if (!success) {
+    return (
+      <div className="text-red-500 p-4 border border-red-200 rounded">
+        Error loading posts: {error}
+      </div>
+    );
+  }
+
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="text-gray-500 p-4 text-center">
+        No posts available. Create the first post above!
+      </div>
+    );
+  }
 
   return (
     <>
-      {posts?.map((post: BlogContentPost) => (
+      {posts.map((post: BlogContentPost) => (
         <Link key={post.id} href={`/posts/${post.id}`}>
           <PostCard
             key={post.id}

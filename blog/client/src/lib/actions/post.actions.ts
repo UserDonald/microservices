@@ -2,8 +2,7 @@
 
 import axios from 'axios';
 
-const POSTS_BASE_URL = 'http://posts-ci-srv:4000';
-const QUERY_BASE_URL = 'http://query-ci-srv:4002';
+const BASE_URL = 'http://10.108.149.211';
 
 export const createPost = async ({
   content,
@@ -18,10 +17,14 @@ export const createPost = async ({
   error?: string;
 }> => {
   try {
-    await axios.post(`${POSTS_BASE_URL}/posts/create`, {
+    await axios.post(`${BASE_URL}/services/posts/create`, {
       content,
       author,
       username,
+    }, {
+      headers: {
+        'Host': 'posts.com'
+      }
     });
 
     return {
@@ -42,7 +45,11 @@ export const getPosts = async (): Promise<{
   posts?: BlogContentPost[];
 }> => {
   try {
-    const { data } = await axios.get(`${QUERY_BASE_URL}/posts`);
+    const { data } = await axios.get(`${BASE_URL}/services/posts`, {
+      headers: {
+        'Host': 'posts.com'
+      }
+    });
 
     return {
       success: true,
@@ -65,7 +72,11 @@ export const getPost = async (
   post?: BlogContentPost;
 }> => {
   try {
-    const { data } = await axios.get(`${QUERY_BASE_URL}/posts/${id}`);
+    const { data } = await axios.get(`${BASE_URL}/services/posts/${id}`, {
+      headers: {
+        'Host': 'posts.com'
+      }
+    });
 
     return {
       success: true,

@@ -12,6 +12,10 @@ spec:
       labels:
         app: client
     spec:
+      hostAliases:
+        - ip: "10.108.149.211"
+          hostnames:
+          - "posts.com"
       containers:
         - name: client
           image: djnash/client:latest
