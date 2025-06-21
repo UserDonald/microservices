@@ -38,5 +38,6 @@ app.get('/events', (req, res) => {
 });
 
 app.listen(4005, () => {
+  console.log('Version: latest');
   console.log('Listening on 4005');
 });

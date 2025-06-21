@@ -18,7 +18,7 @@ export const createPost = async ({
   error?: string;
 }> => {
   try {
-    await axios.post(`${POSTS_BASE_URL}/posts`, {
+    await axios.post(`${POSTS_BASE_URL}/posts/create`, {
       content,
       author,
       username,

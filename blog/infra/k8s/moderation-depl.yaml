@@ -22,3 +22,18 @@ spec:
             limits:
               memory: '128Mi'
               cpu: '500m'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-ci-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 4003
+      targetPort: 4003

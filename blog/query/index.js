@@ -52,12 +52,12 @@ app.post('/events', (req, res) => {
 });
 
 app.listen(4002, async () => {
+  console.log('Version: latest');
   console.log('Listening on 4002');
 
   try {
     const response = await axios.get('http://event-bus-ci-srv:4005/events');
     response.data.forEach((event) => {
-      console.log('Processing event: ', event.type);
       handleEvent(event.type, event.data);
     });
   } catch (error) {
